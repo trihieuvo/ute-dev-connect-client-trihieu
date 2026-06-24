@@ -24,10 +24,15 @@ function LoginForm() {
   const [formErrors, setFormErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [sessionExpiredError, setSessionExpiredError] = useState("");
 
   // Clear login state khi component mount
   useEffect(() => {
     dispatch(clearLoginState());
+    if (localStorage.getItem("session_expired") === "true") {
+      setSessionExpiredError("Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.");
+      localStorage.removeItem("session_expired");
+    }
   }, [dispatch]);
 
   // Chuyển trang khi đăng nhập thành công
@@ -83,6 +88,7 @@ function LoginForm() {
   return (
     <div>
       <div className="mb-6 space-y-3">
+        {sessionExpiredError && <Alert type="error" message={sessionExpiredError} />}
         {loginSuccess && <Alert type="success" message={loginMessage} />}
         {loginError && <Alert type="error" message={loginError} />}
       </div>

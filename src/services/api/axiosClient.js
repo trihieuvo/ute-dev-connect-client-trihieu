@@ -32,4 +32,27 @@ axiosClient.interceptors.request.use(
   }
 );
 
+axiosClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (
+      error.response &&
+      (error.response.status === 401 ||
+        (error.response.status === 403 &&
+          (error.response.data?.message === 'Token không hợp lệ hoặc đã hết hạn' ||
+           error.response.data?.message?.toLowerCase().includes('token'))))
+    ) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.setItem('session_expired', 'true');
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosClient;
