@@ -119,9 +119,9 @@ function VerifyOtpForm() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-gray-500">
+      <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Chưa nhận được mã?{" "}
-        <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-500 hover:underline transition-colors">
+        <Link to="/register" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 hover:underline transition-colors">
           Đăng ký lại
         </Link>
       </p>

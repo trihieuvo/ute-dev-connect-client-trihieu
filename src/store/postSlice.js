@@ -11,14 +11,16 @@ const initialState = {
   error: null,
   page: 1,
   hasMore: true,
+  hasMoreSaved: true,
+  hasMoreHidden: true,
 };
 
 // Async thunk: Lấy tất cả bài viết (GET /api/posts)
 export const getPosts = createAsyncThunk(
   "post/getPosts",
-  async ({ page = 1, limit = 5 } = {}, { rejectWithValue }) => {
+  async ({ page = 1, limit = 5, filter = 'latest', timeframe = '7d' } = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get(`/posts?page=${page}&limit=${limit}`);
+      const response = await axiosClient.get(`/posts?page=${page}&limit=${limit}&filter=${filter}&timeframe=${timeframe}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -76,10 +78,10 @@ export const savePost = createAsyncThunk(
 
 export const getSavedPosts = createAsyncThunk(
   "post/getSavedPosts",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10 } = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get("/posts/saved");
-      return response.data?.data || response.data || [];
+      const response = await axiosClient.get(`/posts/saved?page=${page}&limit=${limit}`);
+      return response.data || {};
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || error.message || "Lỗi khi tải bài viết đã lưu"
@@ -151,10 +153,10 @@ export const likePost = createAsyncThunk(
 // Async thunk: Lấy danh sách bài viết đã ẩn
 export const getHiddenPosts = createAsyncThunk(
   "post/getHiddenPosts",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10 } = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get("/posts/hidden");
-      return response.data?.data || response.data || [];
+      const response = await axiosClient.get(`/posts/hidden?page=${page}&limit=${limit}`);
+      return response.data || {};
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || error.message || "Lỗi khi tải bài viết đã ẩn"
@@ -319,30 +321,54 @@ const postSlice = createSlice({
       })
 
       // GET SAVED POSTS
-      .addCase(getSavedPosts.pending, (state) => {
-        state.loading = true;
+      .addCase(getSavedPosts.pending, (state, action) => {
+        if (action.meta.arg?.page > 1) {
+          state.loadingMore = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getSavedPosts.fulfilled, (state, action) => {
         state.loading = false;
-        state.savedPosts = action.payload;
+        state.loadingMore = false;
+        const { data, hasMore, page } = action.payload;
+        if (page > 1) {
+          state.savedPosts = [...state.savedPosts, ...(data || [])];
+        } else {
+          state.savedPosts = data || [];
+        }
+        state.hasMoreSaved = hasMore !== undefined ? hasMore : false;
       })
       .addCase(getSavedPosts.rejected, (state, action) => {
         state.loading = false;
+        state.loadingMore = false;
         state.error = action.payload;
       })
 
       // GET HIDDEN POSTS
-      .addCase(getHiddenPosts.pending, (state) => {
-        state.loading = true;
+      .addCase(getHiddenPosts.pending, (state, action) => {
+        if (action.meta.arg?.page > 1) {
+          state.loadingMore = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getHiddenPosts.fulfilled, (state, action) => {
         state.loading = false;
-        state.hiddenPosts = action.payload;
+        state.loadingMore = false;
+        const { data, hasMore, page } = action.payload;
+        if (page > 1) {
+          state.hiddenPosts = [...state.hiddenPosts, ...(data || [])];
+        } else {
+          state.hiddenPosts = data || [];
+        }
+        state.hasMoreHidden = hasMore !== undefined ? hasMore : false;
       })
       .addCase(getHiddenPosts.rejected, (state, action) => {
         state.loading = false;
+        state.loadingMore = false;
         state.error = action.payload;
       })
       // LIKE / UNLIKE POST

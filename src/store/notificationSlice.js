@@ -5,16 +5,19 @@ const initialState = {
   notifications: [],
   unreadCount: 0,
   loading: false,
+  loadingMore: false,
+  hasMore: true,
+  page: 1,
   error: null,
 };
 
 // Lấy danh sách thông báo
 export const getNotifications = createAsyncThunk(
   'notification/getNotifications',
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, limit = 20 } = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get('/notifications');
-      return response.data?.data || response.data || []; 
+      const response = await axiosClient.get(`/notifications?page=${page}&limit=${limit}`);
+      return response.data || {};
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Lỗi khi tải thông báo'
@@ -84,15 +87,28 @@ const notificationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // GET NOTIFICATIONS
-      .addCase(getNotifications.pending, (state) => {
-        state.loading = true;
+      .addCase(getNotifications.pending, (state, action) => {
+        if (action.meta.arg?.page > 1) {
+          state.loadingMore = true;
+        } else {
+          state.loading = true;
+        }
+        state.error = null;
       })
       .addCase(getNotifications.fulfilled, (state, action) => {
         state.loading = false;
-        state.notifications = action.payload;
+        state.loadingMore = false;
+        const { data, hasMore, page } = action.payload;
+        if (page > 1) {
+          state.notifications = [...state.notifications, ...(data || [])];
+        } else {
+          state.notifications = data || [];
+        }
+        state.hasMore = hasMore !== undefined ? hasMore : false;
       })
       .addCase(getNotifications.rejected, (state, action) => {
         state.loading = false;
+        state.loadingMore = false;
         state.error = action.payload;
       })
 

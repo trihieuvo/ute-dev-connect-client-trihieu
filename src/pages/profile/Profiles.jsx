@@ -122,7 +122,7 @@ const Profiles = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col font-sans">
       <Navbar />
 
       <main className="flex-grow">
@@ -136,17 +136,17 @@ const Profiles = () => {
                   <Users className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                     Developers Network
                   </h1>
-                  <p className="text-sm text-gray-500 mt-0.5">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                     Khám phá và kết nối với các lập trình viên tài năng, sinh viên UTE cùng chí hướng.
                   </p>
                 </div>
               </div>
               <button
                 onClick={fetchProfiles}
-                className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
+                className="p-2.5 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all duration-200"
                 title="Tải lại danh sách"
               >
                 <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
@@ -168,28 +168,28 @@ const Profiles = () => {
                   placeholder="Tìm kiếm lập trình viên theo tên hoặc kỹ năng... VD: React, Python"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all duration-200 shadow-sm hover:shadow-md"
                 />
               </div>
 
               {/* Profiles Loading, Error, Empty, or List */}
               {loading && profiles.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                   <div className="relative">
-                    <div className="h-16 w-16 rounded-full border-4 border-gray-100"></div>
+                    <div className="h-16 w-16 rounded-full border-4 border-gray-100 dark:border-gray-700"></div>
                     <Loader2 className="h-16 w-16 text-blue-500 animate-spin absolute top-0 left-0" />
                   </div>
-                  <p className="mt-4 text-gray-500 text-sm font-medium animate-pulse">
+                  <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm font-medium animate-pulse">
                     Đang tải danh sách lập trình viên...
                   </p>
                 </div>
               ) : filteredProfiles.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                  <div className="h-14 w-14 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                  <div className="h-14 w-14 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
                     <Users className="h-7 w-7 text-gray-400" />
                   </div>
-                  <p className="text-gray-700 font-medium mb-1">Không tìm thấy lập trình viên nào</p>
-                  <p className="text-sm text-gray-500">Hãy thử dùng các từ khóa hoặc thay đổi bộ lọc ở bên phải.</p>
+                  <p className="text-gray-700 dark:text-gray-200 font-medium mb-1">Không tìm thấy lập trình viên nào</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Hãy thử dùng các từ khóa hoặc thay đổi bộ lọc ở bên phải.</p>
                 </div>
               ) : (
                 <div className="grid gap-4">
@@ -208,7 +208,7 @@ const Profiles = () => {
                   )}
 
                   {visibleCount >= filteredProfiles.length && filteredProfiles.length > 0 && (
-                    <p className="text-center text-gray-400 text-xs py-4">
+                    <p className="text-center text-gray-400 dark:text-gray-500 text-xs py-4">
                       — Đã hiển thị tất cả {filteredProfiles.length} lập trình viên —
                     </p>
                   )}
@@ -218,21 +218,21 @@ const Profiles = () => {
 
             {/* Right Filters Column */}
             <div className="md:col-span-1 space-y-6 md:sticky md:top-24 md:self-start order-1 md:order-2">
-              <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-5">
-                <div className="flex items-center space-x-2 pb-3 border-b border-gray-100">
-                  <SlidersHorizontal className="h-4 w-4 text-blue-600" />
-                  <h3 className="text-sm font-bold text-gray-900">Bộ lọc tìm kiếm</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 shadow-sm space-y-5">
+                <div className="flex items-center space-x-2 pb-3 border-b border-gray-100 dark:border-gray-700">
+                  <SlidersHorizontal className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">Bộ lọc tìm kiếm</h3>
                 </div>
 
                 {/* Filter by Status/Role */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Vai trò / Trạng thái
                   </label>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all font-medium text-gray-700"
+                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-800 transition-all font-medium text-gray-700 dark:text-gray-200"
                   >
                     <option value="">Tất cả vai trò</option>
                     {statusOptions.map((opt) => (
@@ -243,13 +243,13 @@ const Profiles = () => {
 
                 {/* Filter by Faculty */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Khoa đào tạo
                   </label>
                   <select
                     value={facultyFilter}
                     onChange={(e) => setFacultyFilter(e.target.value)}
-                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all font-medium text-gray-700"
+                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-800 transition-all font-medium text-gray-700 dark:text-gray-200"
                   >
                     <option value="">Tất cả khoa</option>
                     {facultyOptions.map((opt) => (
@@ -260,13 +260,13 @@ const Profiles = () => {
 
                 {/* Sort Order */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Sắp xếp theo
                   </label>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all font-medium text-gray-700"
+                    className="block w-full text-xs px-3.5 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-800 transition-all font-medium text-gray-700 dark:text-gray-200"
                   >
                     <option value="reputation">Điểm uy tín (★)</option>
                     <option value="followers">Nhiều người theo dõi</option>
@@ -278,7 +278,7 @@ const Profiles = () => {
                 <button
                   onClick={handleClearFilters}
                   disabled={!searchTerm && !statusFilter && !facultyFilter && sortBy === 'reputation'}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-red-50 hover:text-red-600 hover:border-red-100 border border-gray-100 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-100 dark:hover:border-red-800 border border-gray-100 dark:border-gray-700 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 dark:disabled:bg-gray-800/50 disabled:text-gray-400 dark:disabled:text-gray-500"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   Xóa bộ lọc

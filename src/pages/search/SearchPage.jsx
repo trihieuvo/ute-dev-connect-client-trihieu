@@ -104,7 +104,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <Navbar />
 
       <main className="flex-grow">
@@ -116,17 +116,17 @@ const SearchPage = () => {
               <Search className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                 Tìm Kiếm Nâng Cao
               </h1>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                 Tìm kiếm bài viết, dự án nhóm học tập và hồ sơ lập trình viên
               </p>
             </div>
           </div>
 
           {/* Search Box & Filters */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-8">
             <form onSubmit={handleSearchSubmit}>
               
               {/* Keyword input */}
@@ -139,19 +139,19 @@ const SearchPage = () => {
                   placeholder="Nhập từ khóa tìm kiếm..."
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-sm text-gray-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-2xl text-sm text-gray-950 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-colors"
                 />
               </div>
 
               {/* Type Tabs */}
-              <div className="flex bg-gray-100 p-1 rounded-xl w-fit mb-5">
+              <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-fit mb-5">
                 <button
                   type="button"
                   onClick={() => setType('posts')}
                   className={`flex items-center px-4 py-2 rounded-lg text-xs font-bold transition-all ${
                     type === 'posts'
-                      ? 'bg-white text-blue-600 shadow-xs'
-                      : 'text-gray-500 hover:text-gray-800'
+                      ? 'bg-white dark:bg-gray-800 text-blue-600 shadow-xs'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:text-gray-200'
                   }`}
                 >
                   <Newspaper className="w-3.5 h-3.5 mr-1.5" />
@@ -162,8 +162,8 @@ const SearchPage = () => {
                   onClick={() => setType('groups')}
                   className={`flex items-center px-4 py-2 rounded-lg text-xs font-bold transition-all ${
                     type === 'groups'
-                      ? 'bg-white text-indigo-600 shadow-xs'
-                      : 'text-gray-500 hover:text-gray-800'
+                      ? 'bg-white dark:bg-gray-800 text-indigo-600 shadow-xs'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:text-gray-200'
                   }`}
                 >
                   <Users className="w-3.5 h-3.5 mr-1.5" />
@@ -174,8 +174,8 @@ const SearchPage = () => {
                   onClick={() => setType('developers')}
                   className={`flex items-center px-4 py-2 rounded-lg text-xs font-bold transition-all ${
                     type === 'developers'
-                      ? 'bg-white text-purple-600 shadow-xs'
-                      : 'text-gray-500 hover:text-gray-800'
+                      ? 'bg-white dark:bg-gray-800 text-purple-600 shadow-xs'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:text-gray-200'
                   }`}
                 >
                   <Code className="w-3.5 h-3.5 mr-1.5" />
@@ -186,7 +186,7 @@ const SearchPage = () => {
               {/* Contextual Filters */}
               {type === 'posts' && (
                 <div className="mb-5 animate-fade-in">
-                  <label htmlFor="tag-filter" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
+                  <label htmlFor="tag-filter" className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">
                     Lọc theo tag công nghệ
                   </label>
                   <div className="relative max-w-xs">
@@ -199,7 +199,7 @@ const SearchPage = () => {
                       placeholder="Ví dụ: react, nodejs"
                       value={tag}
                       onChange={(e) => setTag(e.target.value)}
-                      className="block w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+                      className="block w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-xl text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -207,7 +207,7 @@ const SearchPage = () => {
 
               {type === 'developers' && (
                 <div className="mb-5 animate-fade-in">
-                  <label htmlFor="skill-filter" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
+                  <label htmlFor="skill-filter" className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">
                     Lọc theo kỹ năng lập trình
                   </label>
                   <div className="relative max-w-xs">
@@ -220,18 +220,18 @@ const SearchPage = () => {
                       placeholder="Ví dụ: Javascript, Python"
                       value={skill}
                       onChange={(e) => setSkill(e.target.value)}
-                      className="block w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400"
+                      className="block w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-xl text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400"
                     />
                   </div>
                 </div>
               )}
 
               {/* Buttons */}
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-100 justify-end">
+              <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-gray-700 justify-end">
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
+                  className="px-4 py-2 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 rounded-xl transition-colors"
                 >
                   Đặt lại
                 </button>
@@ -250,8 +250,8 @@ const SearchPage = () => {
 
           {/* Results Summary */}
           {!loading && results.length > 0 && (
-            <div className="mb-4 text-sm text-gray-500 font-medium pl-1">
-              Tìm thấy <span className="text-gray-900 font-bold">{total}</span> kết quả
+            <div className="mb-4 text-sm text-gray-500 dark:text-gray-400 font-medium pl-1">
+              Tìm thấy <span className="text-gray-900 dark:text-gray-100 font-bold">{total}</span> kết quả
             </div>
           )}
 
@@ -267,16 +267,16 @@ const SearchPage = () => {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-10 w-10 text-blue-600 animate-spin" />
-              <p className="mt-3 text-gray-500 text-sm font-medium">Đang tải kết quả tìm kiếm...</p>
+              <p className="mt-3 text-gray-500 dark:text-gray-400 text-sm font-medium">Đang tải kết quả tìm kiếm...</p>
             </div>
           ) : results.length === 0 ? (
             /* Empty state */
-            <div className="bg-white rounded-2xl border border-gray-150 p-12 text-center max-w-xl mx-auto shadow-sm">
-              <div className="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-150 dark:border-gray-700 p-12 text-center max-w-xl mx-auto shadow-sm">
+              <div className="h-16 w-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100 dark:border-gray-700">
                 <Search className="h-8 w-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Không có kết quả</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">Không có kết quả</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                 Chúng tôi không tìm thấy kết quả nào khớp với yêu cầu tìm kiếm của bạn. Hãy thử từ khóa khác hoặc loại bỏ các bộ lọc.
               </p>
             </div>
@@ -296,7 +296,7 @@ const SearchPage = () => {
                     const snippet = post.text && post.text.length > 200 ? post.text.substring(0, 200) + '...' : post.text;
 
                     return (
-                      <div key={post._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300 group">
+                      <div key={post._id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all duration-300 group">
                         <div className="flex items-center space-x-3 mb-3">
                           <div className="h-9 w-9 bg-blue-50 rounded-full overflow-hidden flex items-center justify-center">
                             <img 
@@ -307,7 +307,7 @@ const SearchPage = () => {
                             />
                           </div>
                           <div>
-                            <Link to={`/profile/${post.user}`} className="text-sm font-bold text-gray-900 hover:text-blue-600 transition-colors">
+                            <Link to={`/profile/${post.user}`} className="text-sm font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 transition-colors">
                               {post.name || 'Thành viên'}
                             </Link>
                             <div className="flex items-center text-xs text-gray-400 mt-0.5">
@@ -318,7 +318,7 @@ const SearchPage = () => {
                         </div>
 
                         <Link to={`/post/${post._id}`} className="block">
-                          <p className="text-gray-800 text-sm leading-relaxed mb-4 hover:text-gray-950 transition-colors whitespace-pre-wrap">
+                          <p className="text-gray-800 dark:text-gray-200 text-sm leading-relaxed mb-4 hover:text-gray-950 dark:text-gray-100 transition-colors whitespace-pre-wrap">
                             {snippet}
                           </p>
                         </Link>
@@ -335,7 +335,7 @@ const SearchPage = () => {
                           </div>
                         )}
 
-                        <div className="flex items-center justify-between pt-3.5 border-t border-gray-50 text-xs text-gray-500 font-medium">
+                        <div className="flex items-center justify-between pt-3.5 border-t border-gray-50 text-xs text-gray-500 dark:text-gray-400 font-medium">
                           <div className="flex items-center space-x-4">
                             <span className="flex items-center"><ThumbsUp className="w-3.5 h-3.5 mr-1" /> {post.likes?.length || 0} thích</span>
                             <span className="flex items-center"><MessageSquare className="w-3.5 h-3.5 mr-1" /> {post.comments?.length || 0} bình luận</span>
@@ -356,16 +356,16 @@ const SearchPage = () => {
                   {results.map((group) => {
                     const memberCount = group.members?.length || 0;
                     return (
-                      <div key={group._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                      <div key={group._id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug line-clamp-1">{group.name}</h3>
-                          <p className="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-2 min-h-[40px]">
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 leading-snug line-clamp-1">{group.name}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2 min-h-[40px]">
                             {group.description || 'Chưa có mô tả chi tiết cho nhóm học tập này.'}
                           </p>
                         </div>
 
                         <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
-                          <span className="text-xs text-gray-500 font-medium flex items-center">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 font-medium flex items-center">
                             <Users className="w-3.5 h-3.5 mr-1.5" /> {memberCount} thành viên
                           </span>
                           
@@ -390,12 +390,12 @@ const SearchPage = () => {
                     if (!profUser) return null;
 
                     return (
-                      <div key={profile._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                      <div key={profile._id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                         <div>
                           
                           {/* Developer Header */}
                           <div className="flex items-center space-x-3 mb-4">
-                            <div className="h-11 w-11 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border border-gray-200">
+                            <div className="h-11 w-11 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden flex items-center justify-center border border-gray-200 dark:border-gray-600">
                               <img 
                                 src={profUser.avatar || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'} 
                                 alt={profUser.name} 
@@ -404,13 +404,13 @@ const SearchPage = () => {
                               />
                             </div>
                             <div className="min-w-0">
-                              <h4 className="text-sm font-bold text-gray-950 truncate">{profUser.name}</h4>
+                              <h4 className="text-sm font-bold text-gray-950 dark:text-gray-100 truncate">{profUser.name}</h4>
                               <p className="text-xs text-purple-600 font-semibold">{profile.status}</p>
                             </div>
                           </div>
 
                           {/* Profile Fields */}
-                          <div className="space-y-1.5 mb-4 text-xs text-gray-500">
+                          <div className="space-y-1.5 mb-4 text-xs text-gray-500 dark:text-gray-400">
                             <div className="flex items-center"><GraduationCap className="w-3.5 h-3.5 mr-2 text-gray-400" /> {profile.faculty}</div>
                             {profile.company && (
                               <div className="flex items-center"><Briefcase className="w-3.5 h-3.5 mr-2 text-gray-400" /> {profile.company}</div>
@@ -422,7 +422,7 @@ const SearchPage = () => {
 
                           {/* Bio */}
                           {profile.bio && (
-                            <p className="text-xs text-gray-600 line-clamp-2 italic mb-4 leading-relaxed">
+                            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 italic mb-4 leading-relaxed">
                               "{profile.bio}"
                             </p>
                           )}
@@ -436,7 +436,7 @@ const SearchPage = () => {
                                 </span>
                               ))}
                               {profile.skills.length > 5 && (
-                                <span className="px-2 py-0.5 text-3xs font-semibold bg-gray-50 text-gray-500 rounded-full">
+                                <span className="px-2 py-0.5 text-3xs font-semibold bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 rounded-full">
                                   +{profile.skills.length - 5}
                                 </span>
                               )}
@@ -465,7 +465,7 @@ const SearchPage = () => {
                   <button
                     onClick={handleLoadMore}
                     disabled={loadingMore}
-                    className="inline-flex items-center px-5 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-semibold shadow-xs transition-colors disabled:opacity-50"
+                    className="inline-flex items-center px-5 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-semibold shadow-xs transition-colors disabled:opacity-50"
                   >
                     {loadingMore && <Loader2 className="w-4 h-4 mr-2 animate-spin text-gray-400" />}
                     Xem thêm kết quả

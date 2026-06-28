@@ -2,7 +2,7 @@ import VerifyOtpForm from "../../components/auth/VerifyOtpForm";
 
 function VerifyOtp() {
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-slate-50 dark:bg-gray-900">
       <div className="grid min-h-screen lg:grid-cols-2">
         <section className="hidden bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-500 px-12 py-10 text-white lg:flex lg:flex-col lg:justify-between">
           <div>

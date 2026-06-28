@@ -62,12 +62,12 @@ const PostDetail = ({ isModal = false }) => {
           onClick={handleClose}
         >
           <div 
-            className="bg-white rounded-3xl max-w-3xl w-full min-h-[300px] flex items-center justify-center shadow-2xl relative p-6"
+            className="bg-white dark:bg-gray-800 rounded-3xl max-w-3xl w-full min-h-[300px] flex items-center justify-center shadow-2xl relative p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={handleClose}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-all"
+              className="absolute top-4 right-4 p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all"
               title="Đóng"
             >
               <X className="w-5 h-5" />
@@ -92,12 +92,12 @@ const PostDetail = ({ isModal = false }) => {
           onClick={handleClose}
         >
           <div 
-            className="bg-white rounded-3xl max-w-3xl w-full shadow-2xl relative p-6"
+            className="bg-white dark:bg-gray-800 rounded-3xl max-w-3xl w-full shadow-2xl relative p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={handleClose}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-all"
+              className="absolute top-4 right-4 p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-all"
               title="Đóng"
             >
               <X className="w-5 h-5" />
@@ -110,7 +110,7 @@ const PostDetail = ({ isModal = false }) => {
     return (
       <div className="max-w-3xl mx-auto mt-10 px-4">
         <Alert type="error" message={error} />
-        <Link to="/dashboard" className="inline-flex items-center mt-4 text-blue-600 hover:underline">
+        <Link to="/dashboard" className="inline-flex items-center mt-4 text-blue-600 dark:text-blue-400 hover:underline">
           <ArrowLeft className="w-4 h-4 mr-1" /> Quay lại trang chủ
         </Link>
       </div>
@@ -128,13 +128,13 @@ const PostDetail = ({ isModal = false }) => {
         onClick={handleClose}
       >
         <div 
-          className="bg-gray-50 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 sm:p-8 my-8"
+          className="bg-gray-50 dark:bg-gray-900 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 sm:p-8 my-8"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
           <button 
             onClick={handleClose}
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-150 rounded-full transition-all"
+            className="absolute top-4 right-4 p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition-all"
             title="Đóng"
           >
             <X className="w-5 h-5" />
@@ -151,7 +151,7 @@ const PostDetail = ({ isModal = false }) => {
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 pb-12">
-      <Link to="/dashboard" className="inline-flex items-center mb-6 text-gray-500 hover:text-blue-600 transition-colors">
+      <Link to="/dashboard" className="inline-flex items-center mb-6 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         <ArrowLeft className="w-4 h-4 mr-1" /> Quay lại
       </Link>
       

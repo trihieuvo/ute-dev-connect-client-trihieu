@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { X, UserPlus, UserMinus } from 'lucide-react';
 import { profileApi } from '../../services/api/profileApi';
+import Avatar from '../common/Avatar';
 
 const FollowModal = ({ isOpen, onClose, type, userId, loggedInUserId, currentFollowing, onFollowToggle }) => {
   const [users, setUsers] = useState([]);
@@ -54,12 +55,12 @@ const FollowModal = ({ isOpen, onClose, type, userId, loggedInUserId, currentFol
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
-        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-900">
+      <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
+        <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
             {type === 'followers' ? 'Người theo dõi' : 'Đang theo dõi'}
           </h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-200 rounded-full text-gray-500 transition-colors">
+          <button onClick={onClose} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-500 dark:text-gray-400 transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -71,7 +72,7 @@ const FollowModal = ({ isOpen, onClose, type, userId, loggedInUserId, currentFol
             </div>
           ) : users.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-sm">Danh sách trống.</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Danh sách trống.</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -93,15 +94,14 @@ const FollowModal = ({ isOpen, onClose, type, userId, loggedInUserId, currentFol
                 return (
                   <div key={u._id} className="flex items-center justify-between gap-3">
                     <Link to={`/profile/${u._id}`} onClick={onClose} className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-1 min-w-0">
-                      <img 
-                        src={u.avatar || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'} 
+                      <Avatar 
+                        src={u.avatar} 
                         alt={u.name} 
-                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                        className="w-12 h-12 rounded-full object-cover border border-gray-100"
+                        className="w-12 h-12 border border-gray-100 dark:border-gray-800"
                       />
                       <div className="truncate">
-                        <p className="font-semibold text-gray-900 truncate">{u.name}</p>
-                        <p className="text-xs text-gray-500 truncate">{u.studentId || 'N/A'}</p>
+                        <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">{u.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{u.studentId || 'N/A'}</p>
                       </div>
                     </Link>
                     
@@ -110,14 +110,14 @@ const FollowModal = ({ isOpen, onClose, type, userId, loggedInUserId, currentFol
                         {isFollowingTarget ? (
                           <button 
                             onClick={() => handleToggle(u._id, true)}
-                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                            className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
                           >
                             Bỏ theo dõi
                           </button>
                         ) : (
                           <button 
                             onClick={() => handleToggle(u._id, false)}
-                            className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                            className="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
                           >
                             Theo dõi
                           </button>

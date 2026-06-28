@@ -80,13 +80,13 @@ const PostForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 mb-6">
+    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-800 mb-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
-        <h3 className="text-lg font-bold text-gray-900 flex items-center">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center">
           {isQuestion ? (
-             <HelpCircle className="w-5 h-5 mr-2 text-indigo-600" />
+             <HelpCircle className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" />
           ) : (
-             <MessageSquarePlus className="w-5 h-5 mr-2 text-blue-600" />
+             <MessageSquarePlus className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
           )}
           {isQuestion ? 'Tạo câu hỏi' : 'Tạo bài viết mới'}
         </h3>
@@ -94,19 +94,19 @@ const PostForm = () => {
           <label className="flex items-center cursor-pointer">
             <div className="relative">
               <input type="checkbox" className="sr-only" checked={isQuestion} onChange={() => setIsQuestion(!isQuestion)} />
-              <div className={`block w-10 h-6 rounded-full transition-colors ${isQuestion ? 'bg-indigo-600' : 'bg-gray-300'}`}></div>
+              <div className={`block w-10 h-6 rounded-full transition-colors ${isQuestion ? 'bg-indigo-600 dark:bg-indigo-500' : 'bg-gray-300 dark:bg-gray-600'}`}></div>
               <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isQuestion ? 'transform translate-x-4' : ''}`}></div>
             </div>
-            <div className="ml-3 text-sm font-medium text-gray-700">Đây là một câu hỏi?</div>
+            <div className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">Đây là một câu hỏi?</div>
           </label>
 
           <label className="flex items-center cursor-pointer">
             <div className="relative">
               <input type="checkbox" className="sr-only" checked={showCodeSnippet} onChange={() => setShowCodeSnippet(!showCodeSnippet)} />
-              <div className={`block w-10 h-6 rounded-full transition-colors ${showCodeSnippet ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+              <div className={`block w-10 h-6 rounded-full transition-colors ${showCodeSnippet ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}`}></div>
               <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${showCodeSnippet ? 'transform translate-x-4' : ''}`}></div>
             </div>
-            <div className="ml-3 text-sm font-medium text-gray-700">Chèn Code Snippet?</div>
+            <div className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">Chèn Code Snippet?</div>
           </label>
         </div>
       </div>
@@ -114,11 +114,11 @@ const PostForm = () => {
       {apiSuccess && <Alert type="success" message={apiSuccess} />}
       {apiError && <Alert type="error" message={apiError} />}
       
-      <div className="flex space-x-2 mb-2 border-b border-gray-100 pb-2">
-        <button type="button" onClick={() => setIsPreview(false)} className={`px-3 py-1.5 text-sm font-medium rounded-md flex items-center transition-colors ${!isPreview ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50'}`}>
+      <div className="flex space-x-2 mb-2 border-b border-gray-100 dark:border-gray-800 pb-2">
+        <button type="button" onClick={() => setIsPreview(false)} className={`px-3 py-1.5 text-sm font-medium rounded-md flex items-center transition-colors ${!isPreview ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
           <Edit2 className="w-4 h-4 mr-1.5" /> Viết
         </button>
-        <button type="button" onClick={() => setIsPreview(true)} className={`px-3 py-1.5 text-sm font-medium rounded-md flex items-center transition-colors ${isPreview ? 'bg-blue-50 text-blue-600' : 'text-gray-500 hover:bg-gray-50'}`}>
+        <button type="button" onClick={() => setIsPreview(true)} className={`px-3 py-1.5 text-sm font-medium rounded-md flex items-center transition-colors ${isPreview ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
           <Eye className="w-4 h-4 mr-1.5" /> Xem trước
         </button>
       </div>
@@ -135,13 +135,13 @@ const PostForm = () => {
             />
 
             {showCodeSnippet && (
-              <div className="mt-3 p-4 border border-blue-100 rounded-xl bg-slate-50">
+              <div className="mt-3 p-4 border border-blue-100 dark:border-blue-900/50 rounded-xl bg-slate-50 dark:bg-gray-800/50">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Mã nguồn (Code Snippet)</span>
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Mã nguồn (Code Snippet)</span>
                   <select
                     value={codeLanguage}
                     onChange={(e) => setCodeLanguage(e.target.value)}
-                    className="text-xs px-2 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
+                    className="text-xs px-2 py-1.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 font-medium"
                   >
                     <option value="javascript">JavaScript</option>
                     <option value="python">Python</option>
@@ -163,7 +163,7 @@ const PostForm = () => {
             )}
           </>
         ) : (
-          <div className="p-4 border rounded-md bg-gray-50 min-h-[136px] max-w-none text-sm text-slate-800 prose prose-slate prose-sm prose-p:my-1 prose-pre:my-2 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
+          <div className="p-4 border dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 min-h-[136px] max-w-none text-sm text-slate-800 dark:text-slate-200 prose prose-slate dark:prose-invert prose-sm prose-p:my-1 prose-pre:my-2 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
             {text ? (
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
@@ -180,7 +180,7 @@ const PostForm = () => {
                         className="rounded-md my-2"
                       />
                     ) : (
-                      <code {...props} className={`${className} bg-gray-100 text-red-500 px-1 py-0.5 rounded text-xs font-mono`}>
+                      <code {...props} className={`${className} bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1 py-0.5 rounded text-xs font-mono`}>
                         {children}
                       </code>
                     )
@@ -194,8 +194,8 @@ const PostForm = () => {
             )}
 
             {showCodeSnippet && codeSnippet && (
-              <div className="mt-4 border-t border-gray-200 pt-4">
-                <span className="text-xs font-bold text-slate-500 block mb-1">Mã nguồn ({codeLanguage}):</span>
+              <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">Mã nguồn ({codeLanguage}):</span>
                 <SyntaxHighlighter
                   children={codeSnippet}
                   style={vscDarkPlus}
@@ -209,11 +209,11 @@ const PostForm = () => {
         )}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-4 gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">Quyền riêng tư:</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Quyền riêng tư:</span>
             <select
               value={visibility}
               onChange={(e) => setVisibility(e.target.value)}
-              className="text-sm px-3 py-1.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium"
+              className="text-sm px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium"
             >
               <option value="public">🌐 Công khai</option>
               <option value="personal">🔒 Chỉ mình tôi</option>

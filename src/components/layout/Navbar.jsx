@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { User, LogOut, Bell, Heart, MessageCircle, UserPlus, CheckCircle2, Star, Menu, X, Home, Users, FolderGit2, Search, Bookmark, ChevronDown, EyeOff } from 'lucide-react';
+import { User, LogOut, Bell, Heart, MessageCircle, UserPlus, CheckCircle2, Star, Menu, X, Home, Users, FolderGit2, Search, Bookmark, ChevronDown, EyeOff, Shield, AlertCircle } from 'lucide-react';
 import { logout } from '../../store/authSlice';
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead } from '../../store/notificationSlice';
 import { profileApi } from '../../services/api/profileApi';
+import Avatar from '../common/Avatar';
+import ThemeToggle from '../common/ThemeToggle';
 
 // Helper to decode token
 const parseJwt = (token) => {
@@ -47,6 +49,18 @@ const Navbar = () => {
     }
   }, [dispatch, token]);
 
+  useEffect(() => {
+    const handleAvatarUpdate = (e) => {
+      const newAvatarUrl = e.detail;
+      setUserInfo(prev => prev ? { ...prev, avatar: newAvatarUrl } : null);
+    };
+
+    window.addEventListener('avatarUpdated', handleAvatarUpdate);
+    return () => {
+      window.removeEventListener('avatarUpdated', handleAvatarUpdate);
+    };
+  }, []);
+
   // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -68,10 +82,18 @@ const Navbar = () => {
     setShowNotifications(false);
     
     // Navigate based on type
-    if (notification.type === 'like' || notification.type === 'comment') {
-      navigate(`/post/${notification.post}`);
+    if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'post_approved') {
+      const postId = notification.post?._id || notification.post;
+      if (postId) navigate(`/post/${postId}`);
     } else if (notification.type === 'follow') {
-      navigate(`/profile/${notification.sender._id}`);
+      navigate(`/profile/${notification.sender?._id || notification.sender}`);
+    } else if (notification.type === 'post_pending') {
+      const groupId = notification.post?.group;
+      if (groupId) {
+        navigate(`/groups/${groupId}`);
+      } else {
+        navigate('/groups');
+      }
     }
   };
 
@@ -80,6 +102,9 @@ const Navbar = () => {
       case 'like': return <Heart className="w-4 h-4 text-red-500 fill-red-500" />;
       case 'comment': return <MessageCircle className="w-4 h-4 text-blue-500 fill-blue-500" />;
       case 'follow': return <UserPlus className="w-4 h-4 text-green-500" />;
+      case 'post_pending': return <Shield className="w-4 h-4 text-yellow-500" />;
+      case 'post_approved': return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+      case 'post_rejected': return <AlertCircle className="w-4 h-4 text-red-500" />;
       default: return <Bell className="w-4 h-4 text-gray-500" />;
     }
   };
@@ -90,6 +115,9 @@ const Navbar = () => {
       case 'like': return <><span className="font-semibold">{name}</span> đã thích bài viết của bạn.</>;
       case 'comment': return <><span className="font-semibold">{name}</span> đã bình luận về bài viết của bạn.</>;
       case 'follow': return <><span className="font-semibold">{name}</span> đã bắt đầu theo dõi bạn.</>;
+      case 'post_pending': return <><span className="font-semibold">{name}</span> đã đăng một bài viết cần duyệt trong nhóm học tập.</>;
+      case 'post_approved': return <><span className="font-semibold">{name}</span> đã phê duyệt bài viết của bạn.</>;
+      case 'post_rejected': return <><span className="font-semibold">{name}</span> đã từ chối bài viết của bạn vì vi phạm tiêu chuẩn.</>;
       default: return 'Bạn có thông báo mới';
     }
   };
@@ -115,7 +143,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center space-x-6">
@@ -124,7 +152,7 @@ const Navbar = () => {
               <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-md transform group-hover:scale-105 transition-transform duration-200">
                 <span className="text-white font-bold text-lg tracking-tighter">UTE</span>
               </div>
-              <span className="font-bold text-xl text-gray-900 tracking-tight">
+              <span className="font-bold text-xl text-gray-900 dark:text-gray-100 tracking-tight">
                 Connect
               </span>
             </Link>
@@ -133,25 +161,25 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-1">
               <Link 
                 to="/dashboard" 
-                className="text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
               >
                 Bảng tin
               </Link>
               <Link 
                 to="/profiles" 
-                className="text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
               >
                 Cộng đồng
               </Link>
               <Link 
                 to="/groups" 
-                className="text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
               >
                 Nhóm học tập
               </Link>
               <Link 
                 to="/search" 
-                className="text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap"
               >
                 Tìm kiếm
               </Link>
@@ -161,12 +189,13 @@ const Navbar = () => {
           <div className="flex items-center space-x-2 sm:space-x-3">
             {token ? (
               <>
-                <Link to="/chat" className="hidden md:flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-all" title="Tin nhắn">
+                <ThemeToggle className="hidden sm:block mr-1" />
+                <Link to="/chat" className="hidden md:flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-all" title="Tin nhắn">
                   <MessageCircle size={18} />
                   <span className="hidden lg:inline whitespace-nowrap">Tin nhắn</span>
                 </Link>
                 
-                <div className="flex items-center gap-1.5 px-3 py-1.5 mx-1 rounded-full bg-indigo-50 border border-indigo-100 text-sm font-bold text-indigo-700 transition-all cursor-default" title="Điểm Uy Tín (Reputation)">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 mx-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 text-sm font-bold text-indigo-700 dark:text-indigo-400 transition-all cursor-default" title="Điểm Uy Tín (Reputation)">
                   <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                   <span>{reputation}</span>
                 </div>
@@ -175,7 +204,7 @@ const Navbar = () => {
                 <div className="relative" ref={notificationRef}>
                   <button 
                     onClick={() => setShowNotifications(!showNotifications)}
-                    className="flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-all relative"
+                    className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-all relative"
                     title="Thông báo"
                   >
                     <Bell size={18} />
@@ -193,13 +222,13 @@ const Navbar = () => {
                   </button>
                   
                   {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden transform transition-all">
-                      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
-                        <h3 className="text-sm font-bold text-gray-800">Thông báo</h3>
+                    <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 z-50 overflow-hidden transform transition-all">
+                      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+                        <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">Thông báo</h3>
                         {unreadCount > 0 && (
                           <button 
                             onClick={() => dispatch(markAllAsRead())}
-                            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 font-medium"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 font-medium"
                           >
                             <CheckCircle2 size={14} />
                             Đánh dấu đã đọc
@@ -213,30 +242,19 @@ const Navbar = () => {
                             <div 
                               key={notif._id}
                               onClick={() => handleNotificationClick(notif)}
-                              className={`p-3 border-b border-gray-50 flex items-start gap-3 cursor-pointer hover:bg-gray-50 transition-colors ${!notif.isRead ? 'bg-blue-50/30' : ''}`}
+                              className={`p-3 border-b border-gray-50 dark:border-gray-800/50 flex items-start gap-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${!notif.isRead ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''}`}
                             >
                               <div className="relative flex-shrink-0 mt-1">
-                                {notif.sender?.avatar ? (
-                                  <img 
-                                    src={notif.sender.avatar} 
-                                    alt="Avatar" 
-                                    className="w-10 h-10 rounded-full object-cover border border-gray-200"
-                                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                                  />
-                                ) : (
-                                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300">
-                                    <User size={16} className="text-gray-500" />
-                                  </div>
-                                )}
-                                <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-100">
+                                <Avatar src={notif.sender?.avatar} alt="Avatar" className="w-10 h-10 border border-gray-200 dark:border-gray-700" />
+                                <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full p-0.5 shadow-sm border border-gray-100 dark:border-gray-800">
                                   {getNotificationIcon(notif.type)}
                                 </div>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm text-gray-800 leading-snug">
+                                <p className="text-sm text-gray-800 dark:text-gray-200 leading-snug">
                                   {getNotificationText(notif)}
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1 font-medium">
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
                                   {getTimeAgo(notif.createdAt)}
                                 </p>
                               </div>
@@ -247,17 +265,17 @@ const Navbar = () => {
                           ))
                         ) : (
                           <div className="p-8 text-center text-gray-500 flex flex-col items-center">
-                            <Bell className="w-8 h-8 text-gray-300 mb-2" />
+                            <Bell className="w-8 h-8 text-gray-300 dark:text-gray-600 mb-2" />
                             <p className="text-sm">Bạn không có thông báo nào</p>
                           </div>
                         )}
                       </div>
                       
-                      <div className="p-2 bg-gray-50 border-t border-gray-100 text-center">
+                      <div className="p-2 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 text-center">
                         <Link 
                           to="/notifications" 
                           onClick={() => setShowNotifications(false)}
-                          className="text-sm text-blue-600 hover:text-blue-800 font-medium block p-1"
+                          className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium block p-1"
                         >
                           Xem tất cả thông báo
                         </Link>
@@ -270,58 +288,47 @@ const Navbar = () => {
                 <div className="relative" ref={userDropdownRef}>
                   <button
                     onClick={() => setShowUserDropdown(!showUserDropdown)}
-                    className="hidden md:flex items-center gap-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 pl-2 pr-3 py-1.5 rounded-xl text-sm font-semibold transition-all border border-gray-100 bg-gray-50/50"
+                    className="hidden md:flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 pl-2 pr-3 py-1.5 rounded-xl text-sm font-semibold transition-all border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50"
                   >
-                    {userInfo?.avatar ? (
-                      <img
-                        src={userInfo.avatar}
-                        alt={userInfo.name}
-                        className="w-7 h-7 rounded-full object-cover border border-gray-200 shadow-3xs"
-                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                      />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center border border-blue-200 shadow-3xs">
-                        <User size={14} />
-                      </div>
-                    )}
+                    <Avatar src={userInfo?.avatar} alt={userInfo?.name} className="w-7 h-7 border border-gray-200 dark:border-gray-700 shadow-3xs" />
                     <span className="max-w-[100px] truncate">{userInfo?.name || 'Cá nhân'}</span>
                     <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showUserDropdown ? 'rotate-180' : ''}`} />
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden transform transition-all py-1.5">
-                      <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 z-50 overflow-hidden transform transition-all py-1.5">
+                      <div className="px-4 py-2 border-b border-gray-50 dark:border-gray-800 mb-1">
                         <p className="text-xs text-gray-400 font-medium">Tài khoản</p>
-                        <p className="text-sm font-bold text-gray-800 truncate">{userInfo?.name || 'Thành viên'}</p>
+                        <p className="text-sm font-bold text-gray-800 dark:text-gray-200 truncate">{userInfo?.name || 'Thành viên'}</p>
                         {userInfo?.email && (
-                          <p className="text-xs text-gray-500 truncate font-normal mt-0.5">{userInfo.email}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate font-normal mt-0.5">{userInfo.email}</p>
                         )}
                       </div>
 
                       <Link
                         to={userId ? `/profile/${userId}` : `/edit-profile`}
                         onClick={() => setShowUserDropdown(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 font-medium transition-colors"
+                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
                       >
-                        <User size={16} className="text-gray-400" />
+                        <User size={16} className="text-gray-400 dark:text-gray-500" />
                         <span>Hồ sơ của tôi</span>
                       </Link>
 
                       <Link
                         to="/saved-posts"
                         onClick={() => setShowUserDropdown(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 font-medium transition-colors"
+                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
                       >
-                        <Bookmark size={16} className="text-gray-400" />
+                        <Bookmark size={16} className="text-gray-400 dark:text-gray-500" />
                         <span>Bài viết đã lưu</span>
                       </Link>
 
                       <Link
                         to="/hidden-posts"
                         onClick={() => setShowUserDropdown(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 font-medium transition-colors"
+                        className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
                       >
-                        <EyeOff size={16} className="text-gray-400" />
+                        <EyeOff size={16} className="text-gray-400 dark:text-gray-500" />
                         <span>Bài viết đã ẩn</span>
                       </Link>
 
@@ -329,21 +336,21 @@ const Navbar = () => {
                         <Link
                           to="/admin/filters"
                           onClick={() => setShowUserDropdown(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50/50 font-medium transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50/50 dark:hover:bg-rose-900/20 font-medium transition-colors"
                         >
-                          <FolderGit2 size={16} className="text-rose-400" />
+                          <FolderGit2 size={16} className="text-rose-400 dark:text-rose-500" />
                           <span>Quản lý Bộ Lọc</span>
                         </Link>
                       )}
 
-                      <div className="border-t border-gray-100 my-1"></div>
+                      <div className="border-t border-gray-100 dark:border-gray-800 my-1"></div>
 
                       <button
                         onClick={() => {
                           setShowUserDropdown(false);
                           handleLogout();
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50/60 font-semibold transition-colors text-left"
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50/60 dark:hover:bg-red-900/20 font-semibold transition-colors text-left"
                       >
                         <LogOut size={16} />
                         <span>Đăng xuất</span>
@@ -354,15 +361,16 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <ThemeToggle className="hidden sm:block mr-1" />
                 <Link 
                   to="/login" 
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
                 >
                   Đăng nhập
                 </Link>
                 <Link 
                   to="/register" 
-                  className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-2 rounded-lg text-sm font-semibold transition-colors hidden sm:block"
+                  className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors hidden sm:block"
                 >
                   Đăng ký
                 </Link>
@@ -374,7 +382,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/saved-posts"
-                  className="hidden md:flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+                  className="hidden md:flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
                 >
                   Bài viết đã lưu
                 </Link>
@@ -384,7 +392,7 @@ const Navbar = () => {
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-700 md:hidden transition-colors"
+              className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-200 md:hidden transition-colors"
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -395,36 +403,25 @@ const Navbar = () => {
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-xs animate-fade-in" onClick={() => setMobileMenuOpen(false)}>
+        <div className="md:hidden fixed inset-0 z-40 bg-black/30 dark:bg-black/50 backdrop-blur-xs animate-fade-in" onClick={() => setMobileMenuOpen(false)}>
           <div 
-            className="absolute right-0 top-0 bottom-0 w-64 bg-white shadow-2xl p-6 flex flex-col space-y-4"
+            className="absolute right-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 shadow-2xl p-6 flex flex-col space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Drawer */}
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
               {token && userInfo ? (
                 <div className="flex items-center gap-2">
-                  {userInfo.avatar ? (
-                    <img 
-                      src={userInfo.avatar} 
-                      alt="Avatar" 
-                      className="w-8 h-8 rounded-full object-cover border border-gray-200"
-                      onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center border border-blue-200">
-                      <User size={14} />
-                    </div>
-                  )}
+                  <Avatar src={userInfo.avatar} alt="Avatar" className="w-8 h-8 border border-gray-200 dark:border-gray-700" />
                   <div className="flex flex-col">
-                    <span className="font-bold text-sm text-gray-900 leading-tight">{userInfo.name}</span>
-                    <span className="text-xs text-gray-400 font-medium">★ {reputation} uy tín</span>
+                    <span className="font-bold text-sm text-gray-900 dark:text-gray-100 leading-tight">{userInfo.name}</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">★ {reputation} uy tín</span>
                   </div>
                 </div>
               ) : (
-                <span className="font-bold text-lg text-gray-900">Danh mục</span>
+                <span className="font-bold text-lg text-gray-900 dark:text-gray-100">Danh mục</span>
               )}
-              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-lg hover:bg-gray-50 text-gray-500">
+              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400">
                 <X size={20} />
               </button>
             </div>
@@ -434,7 +431,7 @@ const Navbar = () => {
               <Link 
                 to="/dashboard" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 <Home size={18} />
                 Bảng tin
@@ -442,7 +439,7 @@ const Navbar = () => {
               <Link 
                 to="/profiles" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 <Users size={18} />
                 Cộng đồng
@@ -450,7 +447,7 @@ const Navbar = () => {
               <Link 
                 to="/groups" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 <FolderGit2 size={18} />
                 Nhóm học tập
@@ -458,7 +455,7 @@ const Navbar = () => {
               <Link 
                 to="/search" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
               >
                 <Search size={18} />
                 Tìm kiếm
@@ -469,7 +466,7 @@ const Navbar = () => {
                   <Link 
                     to="/chat" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                   >
                     <MessageCircle size={18} />
                     Tin nhắn
@@ -477,7 +474,7 @@ const Navbar = () => {
                   <Link 
                     to={userId ? `/profile/${userId}` : `/edit-profile`} 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                   >
                     <User size={18} />
                     Hồ sơ của tôi
@@ -485,7 +482,7 @@ const Navbar = () => {
                   <Link 
                     to="/saved-posts" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                   >
                     <Bookmark size={18} />
                     Bài viết đã lưu
@@ -493,7 +490,7 @@ const Navbar = () => {
                   <Link 
                     to="/hidden-posts" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                   >
                     <EyeOff size={18} />
                     Bài viết đã ẩn
@@ -502,17 +499,17 @@ const Navbar = () => {
                     <Link 
                       to="/admin/filters" 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 text-rose-600 hover:bg-rose-50 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors"
+                      className="flex items-center gap-3 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors"
                     >
-                      <FolderGit2 size={18} className="text-rose-500" />
+                      <FolderGit2 size={18} className="text-rose-500 dark:text-rose-400" />
                       Quản lý Bộ Lọc
                     </Link>
                   )}
                   
-                  <div className="pt-4 mt-4 border-t border-gray-100">
+                  <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
                     <button 
                       onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                      className="w-full flex items-center gap-3 text-red-600 hover:bg-red-50 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                      className="w-full flex items-center gap-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors"
                     >
                       <LogOut size={18} />
                       Đăng xuất
@@ -521,25 +518,25 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <div className="pt-4 mt-4 border-t border-gray-100 flex flex-col gap-2">
+                  <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
                     <Link 
                       to="/login" 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full flex justify-center py-2 px-3 text-center text-gray-700 hover:bg-gray-50 rounded-lg text-sm font-semibold transition-colors border border-gray-200"
+                      className="w-full flex justify-center py-2 px-3 text-center text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg text-sm font-semibold transition-colors border border-gray-200 dark:border-gray-700"
                     >
                       Đăng nhập
                     </Link>
                     <Link 
                       to="/register" 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full flex justify-center py-2 px-3 text-center bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-sm font-semibold transition-colors"
+                      className="w-full flex justify-center py-2 px-3 text-center bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg text-sm font-semibold transition-colors"
                     >
                       Đăng ký
                     </Link>
                     <Link 
                       to="/auth/forgot-password" 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full flex justify-center py-2 px-3 text-center text-gray-500 hover:text-gray-700 text-xs font-semibold"
+                      className="w-full flex justify-center py-2 px-3 text-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 text-xs font-semibold"
                     >
                       Quên mật khẩu?
                     </Link>

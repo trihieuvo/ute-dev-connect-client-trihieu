@@ -61,9 +61,9 @@ const ResetPasswordForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <p className="text-sm text-gray-600 mb-4 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
           Mã xác nhận gồm 6 số đã được gửi tới email <br/>
-          <strong className="text-gray-900">{email}</strong>
+          <strong className="text-gray-900 dark:text-gray-100">{email}</strong>
         </p>
         
         {alertInfo.message && (
@@ -105,7 +105,7 @@ const ResetPasswordForm = () => {
           />
           <button
             type="button"
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -136,7 +136,7 @@ const ResetPasswordForm = () => {
         <button 
           type="button" 
           onClick={() => dispatch(resetAuth())}
-          className="text-sm font-medium text-blue-600 hover:text-blue-500 hover:underline transition-colors"
+          className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 hover:underline transition-colors"
         >
           Trở lại nhập email
         </button>

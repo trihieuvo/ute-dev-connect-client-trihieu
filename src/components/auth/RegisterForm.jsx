@@ -149,7 +149,7 @@ function RegisterForm() {
           />
           <button
             type="button"
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -173,9 +173,9 @@ function RegisterForm() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-gray-500">
+      <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Đã có tài khoản?{" "}
-        <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-500 hover:underline transition-colors">
+        <Link to="/login" className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 hover:underline transition-colors">
           Đăng nhập
         </Link>
       </p>

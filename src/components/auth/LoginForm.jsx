@@ -122,7 +122,7 @@ function LoginForm() {
           />
           <button
             type="button"
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
             id="toggle-password"
@@ -141,13 +141,13 @@ function LoginForm() {
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition-colors"
               id="remember-me"
             />
-            <span className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors">
+            <span className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">
               Ghi nhớ đăng nhập
             </span>
           </label>
           <Link
             to="/auth/forgot-password"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500 hover:underline transition-colors"
+            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 hover:underline transition-colors"
             id="forgot-password-link"
           >
             Quên mật khẩu?
@@ -163,17 +163,17 @@ function LoginForm() {
       <div className="mt-8">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200" />
+            <div className="w-full border-t border-gray-200 dark:border-gray-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500">Chưa có tài khoản?</span>
+            <span className="px-4 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">Chưa có tài khoản?</span>
           </div>
         </div>
 
         <div className="mt-6">
           <Link
             to="/register"
-            className="w-full flex justify-center items-center py-2.5 px-4 border-2 border-blue-100 rounded-md text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out"
+            className="w-full flex justify-center items-center py-2.5 px-4 border-2 border-blue-100 dark:border-blue-900/50 text-sm font-semibold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:border-blue-200 dark:hover:border-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out"
             id="register-link"
           >
             Tạo tài khoản mới

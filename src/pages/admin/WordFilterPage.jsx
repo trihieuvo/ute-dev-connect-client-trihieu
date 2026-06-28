@@ -209,15 +209,15 @@ const WordFilterPage = () => {
   // Render màn hình từ chối nếu không phải admin
   if (role && role !== 'admin') {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         <Navbar />
         <div className="flex-grow flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-gray-100 shadow-xl text-center">
+          <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl text-center">
             <div className="h-16 w-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-red-100">
               <ShieldAlert size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Truy Cập Bị Từ Chối</h2>
-            <p className="text-gray-500 text-sm mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Truy Cập Bị Từ Chối</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
               Bạn không có quyền truy cập trang này. Trang này chỉ dành cho Admin tổng của hệ thống UTE Connect.
             </p>
             <button 
@@ -233,7 +233,7 @@ const WordFilterPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <Navbar />
 
       <main className="flex-grow">
@@ -241,15 +241,15 @@ const WordFilterPage = () => {
           
           {/* Header Section */}
           <div className="bg-gradient-to-r from-rose-500 to-red-600 text-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-red-500/10 mb-8 relative overflow-hidden">
-            <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute left-1/3 bottom-0 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-white dark:bg-gray-800/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute left-1/3 bottom-0 w-48 h-48 bg-white dark:bg-gray-800/5 rounded-full blur-2xl pointer-events-none" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-10">
               <div className="flex items-center space-x-4">
-                <div className="p-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+                <div className="p-3.5 bg-white dark:bg-gray-800/10 backdrop-blur-md rounded-2xl border border-white/20">
                   <ShieldAlert className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <span className="bg-white/20 border border-white/30 text-white text-xs px-3 py-1 rounded-full uppercase tracking-wider font-extrabold inline-block mb-1">
+                  <span className="bg-white dark:bg-gray-800/20 border border-white/30 text-white text-xs px-3 py-1 rounded-full uppercase tracking-wider font-extrabold inline-block mb-1">
                     Hệ Thống Tổng
                   </span>
                   <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -264,28 +264,28 @@ const WordFilterPage = () => {
           </div>
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
               <Loader2 className="h-10 w-10 text-rose-500 animate-spin mb-4" />
-              <p className="text-gray-500 text-sm">Đang tải cấu hình bộ lọc từ hệ thống...</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Đang tải cấu hình bộ lọc từ hệ thống...</p>
             </div>
           ) : (
             <div className="space-y-8">
               
               {/* AI Moderation Panel */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                   <div className="flex items-start space-x-4">
-                    <div className={`p-3 rounded-2xl border transition-all duration-300 ${aiEnabled ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-gray-50 text-gray-400 border-gray-100'}`}>
+                    <div className={`p-3 rounded-2xl border transition-all duration-300 ${aiEnabled ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-gray-50 dark:bg-gray-900 text-gray-400 border-gray-100 dark:border-gray-700'}`}>
                       <Sparkles className={`h-6 w-6 ${aiEnabled ? 'animate-pulse' : ''}`} />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h2 className="text-lg font-bold text-gray-900">Kiểm duyệt Nội dung bằng AI</h2>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${aiEnabled ? 'bg-emerald-100 text-emerald-700 animate-pulse' : 'bg-gray-100 text-gray-500'}`}>
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Kiểm duyệt Nội dung bằng AI</h2>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${aiEnabled ? 'bg-emerald-100 text-emerald-700 animate-pulse' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}`}>
                           {aiEnabled ? 'Hoạt động' : 'Tắt'}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                         Sử dụng công nghệ AI quét ngữ nghĩa nhằm phát hiện bài viết hoặc bình luận spam, lừa đảo, quảng cáo, hack hoặc cố tình quấy rối cộng đồng.
                       </p>
                     </div>
@@ -296,11 +296,11 @@ const WordFilterPage = () => {
                       type="button"
                       onClick={handleToggleAi}
                       disabled={actionLoading}
-                      className={`relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none ${aiEnabled ? 'bg-emerald-500' : 'bg-gray-200'} ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={`relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none ${aiEnabled ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-600'} ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       <span
                         aria-hidden="true"
-                        className={`pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow ring-0 transition duration-300 ease-in-out ${aiEnabled ? 'translate-x-6' : 'translate-x-0'}`}
+                        className={`pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white dark:bg-gray-800 shadow ring-0 transition duration-300 ease-in-out ${aiEnabled ? 'translate-x-6' : 'translate-x-0'}`}
                       />
                     </button>
                   </div>
@@ -323,16 +323,16 @@ const WordFilterPage = () => {
               </div>
 
               {/* Banned Words Management Panel */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-50">
                   <div>
-                    <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <span>Danh Sách Từ Khóa Cấm</span>
                       <span className="bg-rose-50 text-rose-600 text-xs px-2 py-0.5 rounded-full font-bold">
                         {bannedWords.length} từ khóa
                       </span>
                     </h2>
-                    <p className="text-sm text-gray-500 mt-0.5">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                       Bất kỳ bài viết hoặc bình luận nào chứa từ khóa cấm sẽ bị hệ thống chặn đăng ngay lập tức.
                     </p>
                   </div>
@@ -342,7 +342,7 @@ const WordFilterPage = () => {
                       type="button"
                       onClick={handleExportCsv}
                       disabled={actionLoading}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-semibold transition-all border border-gray-200/50 hover:border-gray-300 disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-500 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-semibold transition-all border border-gray-200 dark:border-gray-600/50 hover:border-gray-300 disabled:opacity-50"
                       title="Tải về danh sách từ khóa cấm dưới dạng file CSV"
                     >
                       <Download className="h-3.5 w-3.5" />
@@ -374,7 +374,7 @@ const WordFilterPage = () => {
                     value={newWord}
                     onChange={(e) => setNewWord(e.target.value)}
                     disabled={actionLoading}
-                    className="flex-grow px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 focus:bg-white transition-all duration-200"
+                    className="flex-grow px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-2xl text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 focus:bg-white dark:bg-gray-800 transition-all duration-200"
                   />
                   <button
                     type="submit"
@@ -402,7 +402,7 @@ const WordFilterPage = () => {
                       type="button"
                       onClick={() => handleAddPreset(preset)}
                       disabled={actionLoading}
-                      className="px-2.5 py-1 bg-gray-100 hover:bg-rose-50 hover:text-rose-600 text-gray-600 rounded-lg transition-all border border-transparent hover:border-rose-100 font-medium"
+                      className="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 hover:bg-rose-50 hover:text-rose-600 text-gray-600 dark:text-gray-400 rounded-lg transition-all border border-transparent hover:border-rose-100 font-medium"
                     >
                       +{preset}
                     </button>
@@ -419,15 +419,15 @@ const WordFilterPage = () => {
                     placeholder="Tìm kiếm nhanh trong danh sách từ cấm..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="block w-full pl-9 pr-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/10 focus:border-rose-200 focus:bg-white transition-all duration-200"
+                    className="block w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/10 focus:border-rose-200 focus:bg-white dark:bg-gray-800 transition-all duration-200"
                   />
                 </div>
 
                 {/* Banned Word Chips list */}
                 {filteredWords.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-10 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+                  <div className="flex flex-col items-center justify-center py-10 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-dashed border-gray-200 dark:border-gray-600">
                     <AlertCircle className="h-8 w-8 text-gray-300 mb-2" />
-                    <p className="text-gray-500 text-xs">
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">
                       {searchQuery ? 'Không tìm thấy từ khóa trùng khớp.' : 'Danh sách trống. Hãy thêm từ khóa đầu tiên!'}
                     </p>
                   </div>
@@ -443,7 +443,7 @@ const WordFilterPage = () => {
                           type="button"
                           onClick={() => handleDeleteWord(word)}
                           disabled={actionLoading}
-                          className="text-rose-400 hover:text-rose-600 p-0.5 rounded-full hover:bg-white transition-all"
+                          className="text-rose-400 hover:text-rose-600 p-0.5 rounded-full hover:bg-white dark:bg-gray-800 transition-all"
                           title={`Xóa "${word}" khỏi bộ lọc`}
                         >
                           <X className="h-3 w-3" />

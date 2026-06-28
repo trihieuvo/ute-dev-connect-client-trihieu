@@ -21,6 +21,11 @@ export const postApi = {
     return axiosClient.get(`/posts/${id}`);
   },
 
+  // Lấy danh sách bài viết của một người dùng cụ thể
+  getUserPosts: (userId, page = 1, limit = 5) => {
+    return axiosClient.get(`/posts/user/${userId}?page=${page}&limit=${limit}`);
+  },
+
   // Lưu / bỏ lưu bài viết
   savePost: (id) => {
     return axiosClient.put(`/posts/save/${id}`);
@@ -85,5 +90,10 @@ export const postApi = {
   // Phê duyệt bình luận (Upvote)
   approveComment: (postId, commentId) => {
     return axiosClient.put(`/posts/comment/${postId}/${commentId}/approve`);
+  },
+
+  // Phản đối bình luận (Downvote)
+  disapproveComment: (postId, commentId) => {
+    return axiosClient.put(`/posts/comment/${postId}/${commentId}/disapprove`);
   },
 };

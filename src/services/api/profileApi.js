@@ -7,6 +7,16 @@ export const profileApi = {
   editProfile: (data) => {
     return axiosClient.put('/profile', data);
   },
+  uploadAvatar: (formData) => {
+    return axiosClient.put('/profile/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  deleteAvatar: () => {
+    return axiosClient.delete('/profile/avatar');
+  },
   getProfiles: () => {
     return axiosClient.get('/profile');
   },

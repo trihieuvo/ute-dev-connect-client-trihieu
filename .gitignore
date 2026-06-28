@@ -41,3 +41,6 @@ package-lock.json
 
 
 src_2/
+
+# CodeGraph
+.codegraph/

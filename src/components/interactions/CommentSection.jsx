@@ -37,11 +37,11 @@ const CommentSection = ({ postId, post, comments = [], onCommentsChange }) => {
   };
 
   return (
-    <section className="mt-8 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+    <section className="mt-8 rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
+      <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Bình luận</h3>
-          <p className="text-sm text-gray-500">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Bình luận</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {comments.length} bình luận trong bài viết này
           </p>
         </div>

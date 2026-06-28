@@ -58,7 +58,7 @@ const RequestOtpForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <p className="text-sm text-gray-600 mb-4 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
           Nhập địa chỉ email của bạn để nhận mã xác thực đặt lại mật khẩu.
         </p>
         

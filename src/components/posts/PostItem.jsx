@@ -8,6 +8,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import Avatar from '../common/Avatar';
+import ReputationBadge from '../common/ReputationBadge';
+import RankBadge from '../common/RankBadge';
 
 /**
  * PostItem - Component thẻ bài viết thu gọn
@@ -22,7 +25,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
   
   const parseJwt = (t) => { try { return JSON.parse(atob(t.split('.')[1])); } catch { return null; } };
   
-  const { _id, text, name, avatar, user, likes, comments, tags, date, isSaved, isQuestion, acceptedAnswer, visibility, isHidden } = post || {};
+  const { _id, text, name, avatar, user, likes, comments, tags, date, isSaved, isQuestion, acceptedAnswer, visibility, isHidden, views } = post || {};
   
   const currentUserId = token ? parseJwt(token)?.user?.id || parseJwt(token)?.id : null;
   const isLiked = Array.isArray(likes) && currentUserId && likes.some(like => {
@@ -263,18 +266,18 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
     <>
       <div className="mb-2">
          {isQuestion && (
-           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 mr-2">
+           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 mr-2">
              <HelpCircle className="w-3 h-3 mr-1" /> Câu hỏi
            </span>
          )}
          {isQuestion && acceptedAnswer && (
-           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 mr-2">
+           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 mr-2">
              <CheckCircle className="w-3 h-3 mr-1" /> Đã giải quyết
            </span>
          )}
       </div>
-      <div className="text-slate-800 text-sm leading-relaxed mb-3 hover:text-gray-900 transition-colors">
-        <div className="prose prose-slate prose-sm text-slate-800 max-w-none prose-p:my-1 prose-pre:my-2 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
+      <div className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed mb-3 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+        <div className="prose prose-slate dark:prose-invert prose-sm text-slate-800 dark:text-slate-200 max-w-none prose-p:my-1 prose-pre:my-2 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
@@ -290,7 +293,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
                     className="rounded-md my-2"
                   />
                 ) : (
-                  <code {...props} className={`${className || ''} bg-gray-100 text-red-500 px-1 py-0.5 rounded text-xs font-mono`}>
+                  <code {...props} className={`${className || ''} bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1 py-0.5 rounded text-xs font-mono`}>
                     {children}
                   </code>
                 )
@@ -305,7 +308,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
   );
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden group">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md dark:hover:shadow-gray-800/50 transition-all duration-300 overflow-hidden group">
       <div className="p-5">
         {/* Header: Avatar + Tên + Ngày */}
         <div className="flex items-center space-x-3 mb-3">
@@ -314,34 +317,25 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
             to={`/profile/${authorId}`} 
             className="flex-shrink-0"
           >
-            <div className="h-11 w-11 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm group-hover:ring-blue-200 transition-all duration-300">
-                <img 
-                  src={avatar || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'} 
-                  alt={name} 
-                  className="h-11 w-11 rounded-full object-cover" 
-                  referrerPolicy="no-referrer"
-                  onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                />
+            <div className="h-11 w-11 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-sm group-hover:ring-blue-200 dark:group-hover:ring-blue-800 transition-all duration-300">
+                <Avatar src={avatar} alt={name} className="h-11 w-11" />
             </div>
           </Link>
           
           <div className="flex-1 min-w-0">
             {/* Tên tác giả */}
-            <div className="flex items-center gap-1.5 truncate">
+            <div className="flex items-center gap-1.5 flex-wrap truncate">
               <Link 
                 to={`/profile/${authorId}`} 
-                className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors truncate block"
+                className="text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
               >
                 {name || 'Người dùng ẩn danh'}
               </Link>
-              {authorReputation !== undefined && (
-                <span className="inline-flex items-center px-1.5 py-0.2 rounded-full text-3xs font-bold bg-amber-50 text-amber-700 border border-amber-100 shadow-3xs" title="Điểm uy tín">
-                  ★ {authorReputation}
-                </span>
-              )}
+              <RankBadge score={authorReputation} className="px-1.5 py-0.5 text-3xs border font-bold rounded-full scale-90 origin-left" />
+              <ReputationBadge score={authorReputation} className="px-1.5 py-0.2 text-3xs shadow-3xs" />
             </div>
-            {/* Ngày đăng & Quyền riêng tư */}
-            <div className="flex items-center text-xs text-gray-400 mt-0.5 gap-2">
+            {/* Ngày đăng & Quyền riêng tư & Lượt xem */}
+            <div className="flex items-center text-xs text-gray-400 mt-0.5 gap-2 flex-wrap">
               <span className="flex items-center">
                 <Calendar className="w-3 h-3 mr-1" />
                 {formattedDate}
@@ -351,21 +345,26 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
                 {getVisibilityIcon(visibility)}
                 <span>{getVisibilityText(visibility)}</span>
               </span>
+              <span className="text-gray-300">•</span>
+              <span className="flex items-center gap-1" title="Lượt xem bài viết">
+                <Eye className="w-3 h-3 text-gray-400" />
+                <span>{views || 0} lượt xem</span>
+              </span>
             </div>
           </div>
           {isPostAuthor && !isEditing && (
             <div className="flex items-center space-x-1">
               <button 
                 onClick={handleHideToggle} 
-                className="text-gray-400 hover:text-indigo-500 p-1.5 rounded-full hover:bg-indigo-50 transition-colors" 
+                className="text-gray-400 hover:text-indigo-500 p-1.5 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" 
                 title={isHidden ? "Hiện lại bài viết" : "Ẩn bài viết"}
               >
                 {isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
               </button>
-              <button onClick={(e) => { e.preventDefault(); setIsEditing(true); }} className="text-gray-400 hover:text-blue-500 p-1.5 rounded-full hover:bg-blue-50 transition-colors" title="Chỉnh sửa bài viết">
+              <button onClick={(e) => { e.preventDefault(); setIsEditing(true); }} className="text-gray-400 hover:text-blue-500 p-1.5 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" title="Chỉnh sửa bài viết">
                 <Edit2 className="w-4 h-4" />
               </button>
-              <button onClick={handleDelete} className="text-gray-400 hover:text-red-500 p-1.5 rounded-full hover:bg-red-50 transition-colors" title="Xóa bài viết">
+              <button onClick={handleDelete} className="text-gray-400 hover:text-red-500 p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Xóa bài viết">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
@@ -378,20 +377,20 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
             <textarea
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
-              className="w-full min-h-[100px] resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full min-h-[100px] resize-none rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-4 py-3 text-sm outline-none transition focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20"
             />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2 gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700 font-medium bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
-                  <input type="checkbox" checked={editIsQuestion} onChange={(e) => setEditIsQuestion(e.target.checked)} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700 dark:text-gray-300 font-medium bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <input type="checkbox" checked={editIsQuestion} onChange={(e) => setEditIsQuestion(e.target.checked)} className="w-4 h-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700" />
                   Câu hỏi
                 </label>
-                <div className="flex items-center gap-1.5 text-sm text-gray-700 font-medium bg-gray-50 px-2 py-1.5 rounded-lg border border-gray-200">
-                  <span className="text-xs text-gray-555 pl-1">Hiển thị:</span>
+                <div className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300 font-medium bg-gray-50 dark:bg-gray-800 px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <span className="text-xs text-gray-555 dark:text-gray-400 pl-1">Hiển thị:</span>
                   <select
                     value={editVisibility}
                     onChange={(e) => setEditVisibility(e.target.value)}
-                    className="text-xs px-2 py-0.5 bg-white border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
+                    className="text-xs px-2 py-0.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 font-medium text-gray-900 dark:text-gray-100"
                   >
                     <option value="public">🌐 Công khai</option>
                     <option value="personal">🔒 Chỉ mình tôi</option>
@@ -401,8 +400,8 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
                 </div>
               </div>
               <div className="flex gap-2 self-end">
-                 <button onClick={(e) => { e.preventDefault(); setIsEditing(false); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Hủy</button>
-                 <button onClick={handleEditSubmit} disabled={isSubmitting} className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-70">
+                 <button onClick={(e) => { e.preventDefault(); setIsEditing(false); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors">Hủy</button>
+                 <button onClick={handleEditSubmit} disabled={isSubmitting} className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg transition-colors disabled:opacity-70">
                    {isSubmitting ? 'Đang lưu...' : 'Lưu'}
                  </button>
               </div>
@@ -424,7 +423,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
             {tags.map((tag, index) => (
               <span 
                 key={index} 
-                className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100"
+                className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800"
               >
                 <Tag className="w-3 h-3 mr-1" />
                 {tag}
@@ -434,15 +433,15 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
         )}
 
        {/* Footer: Likes + Comments + Bookmark */}
-      <div className="flex items-center justify-between pt-3 border-t border-gray-555">
+      <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
         <div className="flex items-center space-x-2">
           <button
             type="button"
             onClick={handleLikeToggle}
             className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-200 ${
               isLiked
-                ? 'text-blue-600 bg-blue-50 hover:bg-blue-100'
-                : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
+                ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50'
+                : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-900/30'
             }`}
           >
             <ThumbsUp
@@ -450,7 +449,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
                 isLiked ? 'fill-blue-500 text-blue-500' : ''
               }`}
             />
-            <span className="font-medium text-gray-600">
+            <span className="font-medium text-gray-600 dark:text-gray-300">
               {likes?.length || 0}
             </span>
           </button>
@@ -458,10 +457,10 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
           <button
             type="button"
             onClick={handleCommentClick}
-            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200"
           >
             <MessageSquare className="w-3.5 h-3.5" />
-            <span className="font-medium text-gray-600">
+            <span className="font-medium text-gray-600 dark:text-gray-300">
               {comments?.length || 0}
             </span>
           </button>
@@ -473,8 +472,8 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
             onClick={handleSavePost}
             className={`inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-200 ${
               isSaved
-                ? 'text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
-                : 'text-gray-500 hover:text-yellow-700 hover:bg-yellow-50'
+                ? 'text-yellow-700 bg-yellow-50 hover:bg-yellow-100 dark:text-yellow-500 dark:bg-yellow-900/30 dark:hover:bg-yellow-900/50'
+                : 'text-gray-500 hover:text-yellow-700 hover:bg-yellow-50 dark:text-gray-400 dark:hover:text-yellow-500 dark:hover:bg-yellow-900/30'
             }`}
           >
             <Bookmark
@@ -489,7 +488,7 @@ const PostItem = ({ post, isDetail = false, onPostUpdate }) => {
             <Link
               to={`/post/${_id}`}
               state={{ backgroundLocation: location }}
-              className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-all duration-200"
+              className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded-lg transition-all duration-200"
             >
               Xem thêm →
             </Link>

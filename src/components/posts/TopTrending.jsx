@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Avatar from '../common/Avatar';
 import {
   AlertCircle,
   Calendar,
@@ -63,10 +64,10 @@ const TopTrending = ({ layout = 'horizontal' }) => {
 
   if (loading) {
     return (
-      <section className="mb-6 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+      <section className="mb-6 rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <Flame className="h-5 w-5 text-orange-500" />
-          <h2 className="text-lg font-bold text-gray-900">Top Trending</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Top Trending</h2>
         </div>
 
         <div className="flex items-center justify-center py-8 text-sm text-gray-500">
@@ -79,7 +80,7 @@ const TopTrending = ({ layout = 'horizontal' }) => {
 
   if (error) {
     return (
-      <section className="mb-6 rounded-3xl border border-red-100 bg-white p-5 shadow-sm">
+      <section className="mb-6 rounded-3xl border border-red-100 dark:border-red-900/50 bg-white dark:bg-gray-900 p-5 shadow-sm">
         <div className="flex items-center gap-2 text-sm text-red-600">
           <AlertCircle className="h-5 w-5" />
           <span>{error}</span>
@@ -90,10 +91,10 @@ const TopTrending = ({ layout = 'horizontal' }) => {
 
   if (trendingPosts.length === 0) {
     return (
-      <section className="mb-6 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
+      <section className="mb-6 rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
         <div className="mb-2 flex items-center gap-2">
           <Flame className="h-5 w-5 text-orange-500" />
-          <h2 className="text-lg font-bold text-gray-900">Top Trending</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Top Trending</h2>
         </div>
         <p className="text-sm text-gray-500">Chưa có bài viết nổi bật.</p>
       </section>
@@ -102,13 +103,13 @@ const TopTrending = ({ layout = 'horizontal' }) => {
 
   if (layout === 'vertical') {
     return (
-      <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-        <div className="mb-4 flex items-center gap-2 pb-3 border-b border-gray-50">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
+      <section className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-5 shadow-sm">
+        <div className="mb-4 flex items-center gap-2 pb-3 border-b border-gray-50 dark:border-gray-800">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
             <Flame className="h-4.5 w-4.5" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-gray-900">Được quan tâm nhất</h2>
+            <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">Được quan tâm nhất</h2>
             <p className="text-2xs text-gray-400 mt-0.5">Top bài viết thảo luận sôi nổi</p>
           </div>
         </div>
@@ -122,14 +123,14 @@ const TopTrending = ({ layout = 'horizontal' }) => {
               <Link
                 key={post._id || index}
                 to={`/post/${post._id}`}
-                className="group flex gap-3 pb-3.5 border-b border-gray-50 last:border-b-0 last:pb-0 hover:bg-gray-50/50 p-1 rounded-lg transition-colors"
+                className="group flex gap-3 pb-3.5 border-b border-gray-50 dark:border-gray-800 last:border-b-0 last:pb-0 hover:bg-gray-50/50 dark:hover:bg-gray-800/50 p-1 rounded-lg transition-colors"
               >
                 <div className="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 text-2xs font-bold text-white shadow-sm shadow-orange-500/10">
                   {index + 1}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
-                    <h4 className="text-xs font-semibold text-gray-800 truncate group-hover:text-blue-600 transition-colors">
+                    <h4 className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {post.name || 'Người dùng ẩn danh'}
                     </h4>
                     {index < 3 && <Trophy className="h-3.5 w-3.5 text-yellow-500 flex-shrink-0" />}
@@ -157,16 +158,16 @@ const TopTrending = ({ layout = 'horizontal' }) => {
   }
 
   return (
-    <section className="mb-6 rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-blue-50 p-5 shadow-sm">
+    <section className="mb-6 rounded-3xl border border-orange-100 dark:border-gray-800 bg-gradient-to-br from-orange-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
               <Flame className="h-5 w-5" />
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Top Trending</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Top Trending</h2>
               <p className="text-sm text-gray-500">
                 10 bài viết nổi bật nhất trong cộng đồng
               </p>
@@ -174,7 +175,7 @@ const TopTrending = ({ layout = 'horizontal' }) => {
           </div>
         </div>
 
-        <span className="hidden rounded-full bg-white px-3 py-1 text-xs font-semibold text-orange-600 shadow-sm sm:inline-flex">
+        <span className="hidden rounded-full bg-white dark:bg-gray-800 px-3 py-1 text-xs font-semibold text-orange-600 dark:text-orange-400 shadow-sm sm:inline-flex">
           Cuộn ngang →
         </span>
       </div>
@@ -187,7 +188,7 @@ const TopTrending = ({ layout = 'horizontal' }) => {
           return (
             <article
               key={post._id || index}
-              className="snap-center min-w-[250px] max-w-[250px] rounded-3xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+              className="snap-center min-w-[250px] max-w-[250px] rounded-3xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-gray-900/50"
             >
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -198,21 +199,16 @@ const TopTrending = ({ layout = 'horizontal' }) => {
                   {index < 3 && <Trophy className="h-4 w-4 text-yellow-500" />}
                 </div>
 
-                <span className="rounded-full bg-orange-50 px-2 py-1 text-xs font-semibold text-orange-600">
+                <span className="rounded-full bg-orange-50 dark:bg-orange-900/30 px-2 py-1 text-xs font-semibold text-orange-600 dark:text-orange-400">
                   Trending
                 </span>
               </div>
 
               <div className="mb-3 flex items-center gap-2">
-                  <img
-                    src={post.avatar || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'}
-                    alt={post.name || 'Avatar'}
-                    className="h-9 w-9 rounded-full object-cover"
-                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'; }}
-                  />
+                  <Avatar src={post.avatar} alt={post.name} className="h-9 w-9" />
 
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-gray-900">
+                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {post.name || 'Người dùng ẩn danh'}
                   </p>
 
@@ -223,11 +219,11 @@ const TopTrending = ({ layout = 'horizontal' }) => {
                 </div>
               </div>
 
-              <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-gray-700">
+              <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                 {shortenText(post.text)}
               </p>
 
-              <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
+              <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-3 text-xs text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <ThumbsUp className="h-4 w-4" />
                   {likeCount}
